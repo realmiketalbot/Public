@@ -1,19 +1,14 @@
 #example script that scrapes data from the IEM ASOS download service
 #adapted from python code here: https://github.com/akrherz/iem/blob/master/scripts/asos/iem_scraper_example.py
-
-#for a map of ASOS stations, see one of the links below or change the location accordingly
-#http://mesonet.agron.iastate.edu/request/download.phtml?network=MN_ASOS
-#http://mesonet.agron.iastate.edu/request/download.phtml?network=IA_ASOS
-#http://mesonet.agron.iastate.edu/request/download.phtml?network=WI_ASOS
+#downloads data for an ASOS station specified below
 
 ###USER INPUTS###
-#download location
-#iem.wd <- "C:/Data"
-#date1 <- ISOdate(2005,1,1) #start date in year, month, day format
-#date2 <- ISOdate(2017,6,26) #end date in year, month, day format
-#user.network <- c("ASOS")
-#user.state <- c("WI") #state
-#user.faaid <- c("OEO") #site FAA identifier - leave empty and a list will print for your reference
+iem.wd <- "C:/Data" #download location
+date1 <- ISOdate(2005,1,1) #start date in year, month, day format
+date2 <- ISOdate(2017,6,26) #end date in year, month, day format
+user.network <- c("ASOS")
+user.state <- c("IA") #state
+user.faaid <- c("SUX") #site FAA identifier - leave empty and a list will print for your reference
 #################
 
 library(jsonlite)
