@@ -1,7 +1,7 @@
 #example script that scrapes data from the IEM ASOS download service
 #adapted from python code here: https://github.com/akrherz/iem/blob/master/scripts/asos/iem_scraper_example.py
 #modified to download data for a single ASOS station specified below
-
+#
 ###USER INPUTS###
 iem.wd <- "C:/Data" #download location
 date1 <- ISOdate(2005,1,1) #start date in year, month, day format
