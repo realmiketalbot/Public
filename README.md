@@ -1,7 +1,7 @@
 # Public Repo
 Here are some random scripts that I felt like sharing publicly. Enjoy!
 
-#### iem_scraper_example.r
+#### [iem_scraper_example.r](https://github.com/realmiketalbot/Public/blob/master/iem_scraper_example.r)
 This script scrapes historical ASOS weather data from the [Iowa Environmental Mesonet](https://mesonet.agron.iastate.edu/request/download.phtml) site. It's basically a translation of Daryl Hertzmann's [Python script](https://github.com/akrherz/iem/blob/master/scripts/asos/iem_scraper_example.py) (which may or may not be more up to date).
 
 #### covid19_analysis.R
