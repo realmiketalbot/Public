@@ -4,10 +4,10 @@
 
 library(tidyr)
 
-years <- c(1998:2008)
-months <- c(1:12)
+years <- c(2015:2015)
+months <- c(5:10)
 
-station.code <- "1706"
+station.code <- "50132"
 
 #station list: https://docs.google.com/spreadsheets/d/1MmbCdB16fR0Q6KNA5Q2k4ddnVW9ZzE6AIyC9K1AokhQ/edit#gid=806259678
 #use Station ID column
