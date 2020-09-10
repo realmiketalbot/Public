@@ -7,7 +7,7 @@ library(tidyverse)
 years <- c(2015:2015)
 months <- c(5:10)
 
-station.code <- "50132"
+station <- "50132"
 
 #station list: https://docs.google.com/spreadsheets/d/1MmbCdB16fR0Q6KNA5Q2k4ddnVW9ZzE6AIyC9K1AokhQ/edit#gid=806259678
 #use Station ID column
@@ -17,7 +17,7 @@ data.list <- list()
 for (year in years) {
   for (month in months) {
     index <- str_c(year, month, sep="-")
-    download.file(sprintf("https://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=1706&Year=%s&Month=%s&Day=14&timeframe=1&submit= Download+Data", year, month),
+    download.file(sprintf("https://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=%s&Year=%s&Month=%s&Day=14&timeframe=1&submit= Download+Data", station, year, month),
                   method = "wget", extra = "--content-disposition", destfile="temp.csv")
     data.list[[index]] <- read_csv("temp.csv", col_types = cols(.default = "c"))
   }
