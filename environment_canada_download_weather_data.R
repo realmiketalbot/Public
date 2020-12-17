@@ -2,16 +2,16 @@
 
 # Mirrors the Linux CLI instructions found here: https://drive.google.com/drive/folders/1WJCDEU34c60IfOnG4rv5EPZ4IhhW9vZH
 
-setwd("/mnt/hdd/git/Public/data")
+setwd("CHANGE ME")
 
 library(tidyverse)
 
-years <- c(2015:2015)
-months <- c(5:10)
+years <- c(2016:2020)
+months <- c(4:10)
 
-station <- "50132"
+station <- "50149"
 
-timeframe <- 1 #1 for hourly, 2 for daily
+timeframe <- 2 #1 for hourly, 2 for daily
 
 #station list: https://docs.google.com/spreadsheets/d/1MmbCdB16fR0Q6KNA5Q2k4ddnVW9ZzE6AIyC9K1AokhQ/edit#gid=806259678
 #use Station ID column
