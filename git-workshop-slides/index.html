@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Git &amp; GitHub</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Mike Talbot" />
+    <meta name="date" content="2023-03-17" />
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+    <script src="libs/typedarray-0.1/typedarray.min.js"></script>
+    <script src="libs/jquery-3.5.1/jquery.min.js"></script>
+    <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Git &amp; GitHub
+]
+.subtitle[
+## Version control for EORites
+]
+.author[
+### Mike Talbot
+]
+.institute[
+### Emmons &amp; Olivier Resources, Inc.
+]
+.date[
+### 2023-03-17
+]
+
+---
+
+
+
+layout: true
+
+background-image: url(https://cdn.jsdelivr.net/gh/eorinc/assets/logos/horizontal_bluegrey_trans.png)
+background-position: 93% 9%
+background-size: 200px
+
+&lt;div class="my-header"&gt;&lt;/div&gt;
+
+&lt;div class="my-footer"&gt;
+  &lt;span class="xaringan"&gt;Made using &lt;a href="https://cran.r-project.org/web/packages/xaringan/index.html"&gt;Xaringan: Presentation Ninja&lt;/a&gt;&lt;/span&gt;
+  &lt;span class="company"&gt;&lt;a href="https://eorinc.com"&gt;Emmons &amp; Olivier Resources, Inc.&lt;/a&gt;&lt;/span&gt;
+&lt;/div&gt; 
+
+---
+
+# Why use Git?
+
+- Unlike generic cloud storage (e.g., OneDrive), Git is designed for code
+
+--
+
+- Archive your code in a logical, centralized location ("repository")
+
+--
+
+- Code is often unfinished but unlike, say, a Word document, code can break
+
+--
+
+- Keep a record of all your changes
+
+--
+
+- Work collaboratively with structure
+
+--
+
+- Visual diffs
+
+```diff
+function () {
+-     Original code
++     Modified code
+}
+```
+
+---
+
+# Git terminology
+&lt;div align="center"&gt;
+  &lt;img src="https://b1694534.smushcdn.com/1694534/wp-content/uploads/2022/01/Untitled-1.png?lossy=1&amp;strip=1&amp;webp=1" width=55%&gt;
+&lt;/div&gt;
+
+---
+
+# How Git works
+&lt;div align="center"&gt;
+  &lt;a href="https://www.nobledesktop.com/blog/what-is-git-and-why-should-you-use-it" target="_blank"&gt;
+    &lt;img src="https://www.nobledesktop.com/image/blog/git-branches-merge.png" width=75%&gt;
+  &lt;/a&gt;
+&lt;/div&gt;
+
+.footnote[
+  Source: [What Is Git &amp; Why Should You Use It?](https://www.nobledesktop.com/blog/what-is-git-and-why-should-you-use-it) [accessed 2023-03-17]
+]
+
+---
+
+# How GitHub works
+
+- Many options for code sharing (GitHub, GitLab, BitBucket...)
+
+--
+
+- LOTS of features
+
+--
+
+- At a basic level (for our purposes), it hosts a shared/central repository
+
+--
+
+- You "clone" GitHub's version of the repository locally, then "push" your changes back to it
+
+--
+
+- In between, you "pull" subsequent changes from GitHub's repository to your local repository
+
+--
+
+- ...and "commit" individual changes to your local repository
+
+--
+
+- Allows the shared and local repositories to be used completely independently
+
+---
+
+# How Git works
+&lt;div align="center"&gt;
+  &lt;a href="https://www.nobledesktop.com/blog/what-is-git-and-why-should-you-use-it" target="_blank"&gt;
+    &lt;img src="https://www.nobledesktop.com/image/blog/git-distributed-workflow-diagram.png" width=75%&gt;
+  &lt;/a&gt;
+&lt;/div&gt;
+
+.footnote[
+  Source: [What Is Git &amp; Why Should You Use It?](https://www.nobledesktop.com/blog/what-is-git-and-why-should-you-use-it) [accessed 2023-03-17]
+]
+
+---
+
+# How Git works
+&lt;div align="center"&gt;
+  &lt;a href="https://dev.to/sublimegeek/git-staging-area-explained-like-im-five-1anh" target="_blank"&gt;
+    &lt;img src="https://res.cloudinary.com/practicaldev/image/fetch/s--Si7ksd-d--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://cdn-images-1.medium.com/max/800/1%2AdiRLm1S5hkVoh5qeArND0Q.png" width=50%&gt;
+  &lt;/a&gt;
+&lt;/div&gt;
+
+.footnote[
+  Source: [Git Staging Area: Explained Like I'm Five](https://dev.to/sublimegeek/git-staging-area-explained-like-im-five-1anh) [accessed 2023-03-17]
+]
+
+---
+
+# Prerequisites
+
+|                                   |                                           |
+|-----------------------------------|------------------------------------       |
+|1. Create a GitHub account         | [GitHub](https://github.com)          |
+|2. Install Git                     | `choco install git`                       |
+|3. Install Visual Studio Code      | `choco install vscode`                    |
+|4. Install R                       | `choco install r.project`                 |
+|5. Install RStudio                 | `choco install r.studio`                   |
+|6. Configure Git                   | [Wiki](https://eorinc.io/wiki/index.php?title=Git#Setup)   |
+
+---
+
+# Configuring VSCode
+
+Configure Settings Sync
+
+&lt;div align="center"&gt;
+  &lt;img src="assets/vscode-settings-sync.gif" width=80%&gt;
+&lt;/div&gt;
+
+---
+
+# Configuring VSCode
+
+&lt;div align="center"&gt;
+  &lt;img src="https://i.imgflip.com/7ihouo.jpg" width=40%&gt;
+&lt;/div&gt;
+
+---
+
+# Configuring VSCode
+
+Clone the repository `eorinc/git-workshop`
+
+&lt;div align="center"&gt;
+  &lt;img src="assets/vscode-clone-repo.gif" width=80%&gt;
+&lt;/div&gt;
+
+
+---
+
+# Some basic VSCode/Git actions
+
+- Create a new file called `&lt;your-username&gt;-test.txt` and add some text to it
+
+--
+
+- Stage and commit your changes (to your local repository)
+
+--
+
+- Push your change (to GitHub)
+
+--
+
+- Error message? Pull subsequent changes, then push again!
+
+--
+
+- Merge conflict? Did you use your username in the file name?
+
+---
+
+# Let's cause conflict
+
+- Add some text to the file called `merge-conflicts.txt`
+
+--
+
+- Stage and commit your changes, then push
+
+--
+
+- What happened?
+
+---
+
+# Enter branching
+
+- Imagine this as a script, rather than a text file
+
+--
+
+- Minor/unfinished changes will break the code... for you and others
+
+--
+
+- Use a branch to isolate your code until you're ready to merge it with other changes
+
+--
+
+- Create a distinct branch for a separate feature or issue
+
+---
+
+# Creating a branch
+
+Create a new (unique!) branch
+
+&lt;div align="center"&gt;
+  &lt;img src="assets/vscode-create-branch.gif" width=80%&gt;
+&lt;/div&gt;
+
+---
+
+# Adding a change to your branch
+
+- Add some text to the file called `branched-commits.txt`
+
+--
+
+- Stage and commit your changes, then push
+
+--
+
+- Pull subsequent changes
+
+--
+
+- You shouldn't see anyone else changes... unless you switch to their branch
+
+---
+
+# Creating a Pull Request
+
+- Create a PR from your branch into the `main` branch
+
+&lt;div align="center"&gt;
+  &lt;img src="assets/vscode-create-pr.gif" width=80%&gt;
+&lt;/div&gt;
+
+--
+
+# Merging a Pull Request
+
+Mike will demonstrate merging a PR
+
+---
+
+# Poking around GitHub
+
+- Look at the code
+
+--
+
+- Look at Commits
+
+--
+
+- Look at Branches
+
+--
+
+- Look at Pull Requests
+
+--
+
+- Submit an issue
+
+---
+
+# Let's pause
+
+Questions?
+
+&lt;div align="center"&gt;
+  &lt;img src="https://media.tenor.com/CKtsc85FOlQAAAAC/its-always-sunny-in-philadelphia-charlie.gif" width=40%&gt;
+&lt;/div&gt;
+
+---
+
+# Configuring RStudio
+
+Clone the repo `https://github.com/eorinc/git-workshop`
+
+&lt;div align="center"&gt;
+  &lt;img src="assets/rstudio-clone-repo.gif" width=80%&gt;
+&lt;/div&gt;
+
+---
+
+# Using RStudio with Git
+
+- Notice the `Git` tab
+
+--
+
+- Staging is done via checkboxes
+
+--
+
+- Commit, Push, Pull, New Branch... all via buttons
+
+--
+
+- Notice the `.gitignore` file - open it up and let's discuss
+
+---
+
+# Some basic RStudio/Git actions
+
+Create a new script called `&lt;your-username&gt;-script.R`
+
+````markdown
+library(ggplot2)
+library(plotly)
+library(gapminder)
+
+p &lt;- gapminder %&gt;%
+  filter(year==1977) %&gt;%
+  ggplot( aes(gdpPercap, lifeExp, size = pop, color=continent)) +
+  geom_point() +
+  theme_bw()
+
+ggplotly(p)
+````
+
+---
+
+# Cool stuff
+
+&lt;div align="center"&gt;
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-80f264456da16bcd6e8a" style="width:80%;height:504px;"></div>
+<script type="application/json" data-for="htmlwidget-80f264456da16bcd6e8a">{"x":{"data":[{"x":[4910.416756,3008.647355,1029.161251,3214.857818,743.3870368,556.1032651,1783.432873,1109.374338,1133.98495,1172.603047,795.757282,3259.178978,2517.736547,3081.761022,2785.493582,958.5668124,505.7538077,556.8083834,21745.57328,884.7552507,993.2239571,874.6858643,764.7259628,1267.613204,745.3695408,640.3224383,21951.21176,1544.228586,663.2236766,686.3952693,1497.492223,3710.982963,2370.619976,502.3197334,3876.485958,808.8970728,1981.951806,4319.804067,670.0806011,1737.561657,1561.769116,1348.285159,1450.992513,8028.651439,2202.988423,3781.410618,962.4922932,1532.776998,3120.876811,843.7331372,1588.688299,685.5876821],"y":[58.014,39.483,49.19,59.319,46.137,45.91,49.355,46.775,47.383,50.939,47.804,55.625,52.374,46.519,53.319,42.024,44.535,44.51,52.79,41.842,51.756,40.762,37.465,56.155,52.208,43.764,57.442,46.881,43.767,41.714,50.852,64.93,55.73,42.495,56.437,41.291,44.514,67.064,45,58.55,48.879,36.788,41.974,55.527,47.8,52.537,49.919,52.887,59.837,50.35,51.386,57.674],"text":["gdpPercap:  4910.4168<br />lifeExp: 58.01400<br />pop:  17152804<br />continent: Africa","gdpPercap:  3008.6474<br />lifeExp: 39.48300<br />pop:   6162675<br />continent: Africa","gdpPercap:  1029.1613<br />lifeExp: 49.19000<br />pop:   3168267<br />continent: Africa","gdpPercap:  3214.8578<br />lifeExp: 59.31900<br />pop:    781472<br />continent: Africa","gdpPercap:   743.3870<br />lifeExp: 46.13700<br />pop:   5889574<br />continent: Africa","gdpPercap:   556.1033<br />lifeExp: 45.91000<br />pop:   3834415<br />continent: Africa","gdpPercap:  1783.4329<br />lifeExp: 49.35500<br />pop:   7959865<br />continent: Africa","gdpPercap:  1109.3743<br />lifeExp: 46.77500<br />pop:   2167533<br />continent: Africa","gdpPercap:  1133.9850<br />lifeExp: 47.38300<br />pop:   4388260<br />continent: Africa","gdpPercap:  1172.6030<br />lifeExp: 50.93900<br />pop:    304739<br />continent: Africa","gdpPercap:   795.7573<br />lifeExp: 47.80400<br />pop:  26480870<br />continent: Africa","gdpPercap:  3259.1790<br />lifeExp: 55.62500<br />pop:   1536769<br />continent: Africa","gdpPercap:  2517.7365<br />lifeExp: 52.37400<br />pop:   7459574<br />continent: Africa","gdpPercap:  3081.7610<br />lifeExp: 46.51900<br />pop:    228694<br />continent: Africa","gdpPercap:  2785.4936<br />lifeExp: 53.31900<br />pop:  38783863<br />continent: Africa","gdpPercap:   958.5668<br />lifeExp: 42.02400<br />pop:    192675<br />continent: Africa","gdpPercap:   505.7538<br />lifeExp: 44.53500<br />pop:   2512642<br />continent: Africa","gdpPercap:   556.8084<br />lifeExp: 44.51000<br />pop:  34617799<br />continent: Africa","gdpPercap: 21745.5733<br />lifeExp: 52.79000<br />pop:    706367<br />continent: Africa","gdpPercap:   884.7553<br />lifeExp: 41.84200<br />pop:    608274<br />continent: Africa","gdpPercap:   993.2240<br />lifeExp: 51.75600<br />pop:  10538093<br />continent: Africa","gdpPercap:   874.6859<br />lifeExp: 40.76200<br />pop:   4227026<br />continent: Africa","gdpPercap:   764.7260<br />lifeExp: 37.46500<br />pop:    745228<br />continent: Africa","gdpPercap:  1267.6132<br />lifeExp: 56.15500<br />pop:  14500404<br />continent: Africa","gdpPercap:   745.3695<br />lifeExp: 52.20800<br />pop:   1251524<br />continent: Africa","gdpPercap:   640.3224<br />lifeExp: 43.76400<br />pop:   1703617<br />continent: Africa","gdpPercap: 21951.2118<br />lifeExp: 57.44200<br />pop:   2721783<br />continent: Africa","gdpPercap:  1544.2286<br />lifeExp: 46.88100<br />pop:   8007166<br />continent: Africa","gdpPercap:   663.2237<br />lifeExp: 43.76700<br />pop:   5637246<br />continent: Africa","gdpPercap:   686.3953<br />lifeExp: 41.71400<br />pop:   6491649<br />continent: Africa","gdpPercap:  1497.4922<br />lifeExp: 50.85200<br />pop:   1456688<br />continent: Africa","gdpPercap:  3710.9830<br />lifeExp: 64.93000<br />pop:    913025<br />continent: Africa","gdpPercap:  2370.6200<br />lifeExp: 55.73000<br />pop:  18396941<br />continent: Africa","gdpPercap:   502.3197<br />lifeExp: 42.49500<br />pop:  11127868<br />continent: Africa","gdpPercap:  3876.4860<br />lifeExp: 56.43700<br />pop:    977026<br />continent: Africa","gdpPercap:   808.8971<br />lifeExp: 41.29100<br />pop:   5682086<br />continent: Africa","gdpPercap:  1981.9518<br />lifeExp: 44.51400<br />pop:  62209173<br />continent: Africa","gdpPercap:  4319.8041<br />lifeExp: 67.06400<br />pop:    492095<br />continent: Africa","gdpPercap:   670.0806<br />lifeExp: 45.00000<br />pop:   4657072<br />continent: Africa","gdpPercap:  1737.5617<br />lifeExp: 58.55000<br />pop:     86796<br />continent: Africa","gdpPercap:  1561.7691<br />lifeExp: 48.87900<br />pop:   5260855<br />continent: Africa","gdpPercap:  1348.2852<br />lifeExp: 36.78800<br />pop:   3140897<br />continent: Africa","gdpPercap:  1450.9925<br />lifeExp: 41.97400<br />pop:   4353666<br />continent: Africa","gdpPercap:  8028.6514<br />lifeExp: 55.52700<br />pop:  27129932<br />continent: Africa","gdpPercap:  2202.9884<br />lifeExp: 47.80000<br />pop:  17104986<br />continent: Africa","gdpPercap:  3781.4106<br />lifeExp: 52.53700<br />pop:    551425<br />continent: Africa","gdpPercap:   962.4923<br />lifeExp: 49.91900<br />pop:  17129565<br />continent: Africa","gdpPercap:  1532.7770<br />lifeExp: 52.88700<br />pop:   2308582<br />continent: Africa","gdpPercap:  3120.8768<br />lifeExp: 59.83700<br />pop:   6005061<br />continent: Africa","gdpPercap:   843.7331<br />lifeExp: 50.35000<br />pop:  11457758<br />continent: Africa","gdpPercap:  1588.6883<br />lifeExp: 51.38600<br />pop:   5216550<br />continent: Africa","gdpPercap:   685.5877<br />lifeExp: 57.67400<br />pop:   6642107<br />continent: Africa"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":[6.32127781530702,5.29612899121632,4.85958274371316,4.29233940761101,5.26165272498491,4.97061767194295,5.5059176412168,4.66704214356912,5.05559917855771,4.06676322554192,6.94049569932146,4.52040583610645,5.45016604603988,4.01129639562885,7.60694585246374,3.97973112975184,4.73782100329548,7.39505365224446,4.26382530133105,4.22383634289638,5.76860640347983,5.03145493864573,4.27878249624843,6.11542223529683,4.44354450304809,4.56187177172394,4.77827606357594,5.51109590728372,5.22907021838905,5.3366454219231,4.49965617393791,4.33879188894232,6.41229679974379,5.82395887424691,4.36004866819238,5.23491359575959,8.62896025232351,4.17122854948148,5.09486783222961,3.77952755905512,5.17905878226218,4.854775454452,5.05045749460444,6.97912565512447,6.31771439639559,4.19891947998289,6.31954665895726,4.69663035294985,5.27632870617264,5.85427629024999,5.17305387000117,5.35482857766587],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"Africa","legendgroup":"Africa","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[10079.02674,3548.097832,6660.118654,22090.88306,4756.763836,3815.80787,5926.876967,6380.494966,2681.9889,6679.62326,5138.922374,4879.992748,1874.298931,3203.208066,6650.195573,7674.929108,5486.371089,5351.912144,3248.373311,6281.290855,9770.524921,7899.554209,24072.63213,6504.339663,13143.95095],"y":[68.481,50.023,61.489,74.21,67.052,63.837,70.75,72.649,61.788,61.31,56.696,56.029,49.923,57.402,70.11,65.032,57.47,68.681,66.353,58.447,73.44,68.3,73.38,69.481,67.456],"text":["gdpPercap: 10079.0267<br />lifeExp: 68.48100<br />pop:  26983828<br />continent: Americas","gdpPercap:  3548.0978<br />lifeExp: 50.02300<br />pop:   5079716<br />continent: Americas","gdpPercap:  6660.1187<br />lifeExp: 61.48900<br />pop: 114313951<br />continent: Americas","gdpPercap: 22090.8831<br />lifeExp: 74.21000<br />pop:  23796400<br />continent: Americas","gdpPercap:  4756.7638<br />lifeExp: 67.05200<br />pop:  10599793<br />continent: Americas","gdpPercap:  3815.8079<br />lifeExp: 63.83700<br />pop:  25094412<br />continent: Americas","gdpPercap:  5926.8770<br />lifeExp: 70.75000<br />pop:   2108457<br />continent: Americas","gdpPercap:  6380.4950<br />lifeExp: 72.64900<br />pop:   9537988<br />continent: Americas","gdpPercap:  2681.9889<br />lifeExp: 61.78800<br />pop:   5302800<br />continent: Americas","gdpPercap:  6679.6233<br />lifeExp: 61.31000<br />pop:   7278866<br />continent: Americas","gdpPercap:  5138.9224<br />lifeExp: 56.69600<br />pop:   4282586<br />continent: Americas","gdpPercap:  4879.9927<br />lifeExp: 56.02900<br />pop:   5703430<br />continent: Americas","gdpPercap:  1874.2989<br />lifeExp: 49.92300<br />pop:   4908554<br />continent: Americas","gdpPercap:  3203.2081<br />lifeExp: 57.40200<br />pop:   3055235<br />continent: Americas","gdpPercap:  6650.1956<br />lifeExp: 70.11000<br />pop:   2156814<br />continent: Americas","gdpPercap:  7674.9291<br />lifeExp: 65.03200<br />pop:  63759976<br />continent: Americas","gdpPercap:  5486.3711<br />lifeExp: 57.47000<br />pop:   2554598<br />continent: Americas","gdpPercap:  5351.9121<br />lifeExp: 68.68100<br />pop:   1839782<br />continent: Americas","gdpPercap:  3248.3733<br />lifeExp: 66.35300<br />pop:   2984494<br />continent: Americas","gdpPercap:  6281.2909<br />lifeExp: 58.44700<br />pop:  15990099<br />continent: Americas","gdpPercap:  9770.5249<br />lifeExp: 73.44000<br />pop:   3080828<br />continent: Americas","gdpPercap:  7899.5542<br />lifeExp: 68.30000<br />pop:   1039009<br />continent: Americas","gdpPercap: 24072.6321<br />lifeExp: 73.38000<br />pop: 220239000<br />continent: Americas","gdpPercap:  6504.3397<br />lifeExp: 69.48100<br />pop:   2873520<br />continent: Americas","gdpPercap: 13143.9510<br />lifeExp: 67.45600<br />pop:  13503563<br />continent: Americas"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(163,165,0,1)","opacity":1,"size":[6.97047083068522,5.15434238640086,10.3553727984455,6.77543956769576,5.77446910007444,6.85635435789675,4.65435232683653,5.6710443310913,5.18472018302092,5.42956521861593,5.0398270921093,5.23768683822733,5.13057191783969,4.83958883002819,4.66475315834704,8.68911697083458,4.74607251669638,4.59414954550014,4.82688148286866,6.23316601826461,4.84414878929001,4.37991825947829,12.9086371873162,4.80663028657321,6.03320025163606],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(163,165,0,1)"}},"hoveron":"points","name":"Americas","legendgroup":"Americas","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[786.11336,19340.10196,659.8772322,524.9721832,741.2374699,11186.14125,813.337323,1382.702056,11888.59508,14688.23507,13306.61921,16610.37701,2852.351568,4106.301249,4657.22102,59265.47714,8659.696836,3827.921571,1647.511665,371,694.1124398,11848.34392,1175.921193,2373.204287,34167.7626,11210.08948,1348.775651,3195.484582,5596.519826,1961.224635,713.5371196,3682.831494,1829.765177],"y":[38.438,65.593,46.923,31.22,63.96736,73.6,54.208,52.702,57.702,60.413,73.06,75.38,61.134,67.159,64.766,69.343,66.099,65.256,55.491,56.059,46.748,57.367,54.043,60.06,58.69,70.795,65.949,61.195,70.59,62.494,55.764,60.765,44.175],"text":["gdpPercap:   786.1134<br />lifeExp: 38.43800<br />pop:  14880372<br />continent: Asia","gdpPercap: 19340.1020<br />lifeExp: 65.59300<br />pop:    297410<br />continent: Asia","gdpPercap:   659.8772<br />lifeExp: 46.92300<br />pop:  80428306<br />continent: Asia","gdpPercap:   524.9722<br />lifeExp: 31.22000<br />pop:   6978607<br />continent: Asia","gdpPercap:   741.2375<br />lifeExp: 63.96736<br />pop: 943455000<br />continent: Asia","gdpPercap: 11186.1413<br />lifeExp: 73.60000<br />pop:   4583700<br />continent: Asia","gdpPercap:   813.3373<br />lifeExp: 54.20800<br />pop: 634000000<br />continent: Asia","gdpPercap:  1382.7021<br />lifeExp: 52.70200<br />pop: 136725000<br />continent: Asia","gdpPercap: 11888.5951<br />lifeExp: 57.70200<br />pop:  35480679<br />continent: Asia","gdpPercap: 14688.2351<br />lifeExp: 60.41300<br />pop:  11882916<br />continent: Asia","gdpPercap: 13306.6192<br />lifeExp: 73.06000<br />pop:   3495918<br />continent: Asia","gdpPercap: 16610.3770<br />lifeExp: 75.38000<br />pop: 113872473<br />continent: Asia","gdpPercap:  2852.3516<br />lifeExp: 61.13400<br />pop:   1937652<br />continent: Asia","gdpPercap:  4106.3012<br />lifeExp: 67.15900<br />pop:  16325320<br />continent: Asia","gdpPercap:  4657.2210<br />lifeExp: 64.76600<br />pop:  36436000<br />continent: Asia","gdpPercap: 59265.4771<br />lifeExp: 69.34300<br />pop:   1140357<br />continent: Asia","gdpPercap:  8659.6968<br />lifeExp: 66.09900<br />pop:   3115787<br />continent: Asia","gdpPercap:  3827.9216<br />lifeExp: 65.25600<br />pop:  12845381<br />continent: Asia","gdpPercap:  1647.5117<br />lifeExp: 55.49100<br />pop:   1528000<br />continent: Asia","gdpPercap:   371.0000<br />lifeExp: 56.05900<br />pop:  31528087<br />continent: Asia","gdpPercap:   694.1124<br />lifeExp: 46.74800<br />pop:  13933198<br />continent: Asia","gdpPercap: 11848.3439<br />lifeExp: 57.36700<br />pop:   1004533<br />continent: Asia","gdpPercap:  1175.9212<br />lifeExp: 54.04300<br />pop:  78152686<br />continent: Asia","gdpPercap:  2373.2043<br />lifeExp: 60.06000<br />pop:  46850962<br />continent: Asia","gdpPercap: 34167.7626<br />lifeExp: 58.69000<br />pop:   8128505<br />continent: Asia","gdpPercap: 11210.0895<br />lifeExp: 70.79500<br />pop:   2325300<br />continent: Asia","gdpPercap:  1348.7757<br />lifeExp: 65.94900<br />pop:  14116836<br />continent: Asia","gdpPercap:  3195.4846<br />lifeExp: 61.19500<br />pop:   7932503<br />continent: Asia","gdpPercap:  5596.5198<br />lifeExp: 70.59000<br />pop:  16785196<br />continent: Asia","gdpPercap:  1961.2246<br />lifeExp: 62.49400<br />pop:  44148285<br />continent: Asia","gdpPercap:   713.5371<br />lifeExp: 55.76400<br />pop:  50533506<br />continent: Asia","gdpPercap:  3682.8315<br />lifeExp: 60.76500<br />pop:   1261091<br />continent: Asia","gdpPercap:  1829.7652<br />lifeExp: 44.17500<br />pop:   8403990<br />continent: Asia"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,191,125,1)","opacity":1,"size":[6.14601109401926,4.06189233680308,9.29441811927379,5.39475462377927,22.6771653543307,5.08426676230058,19.2706113323364,10.9715821633898,7.43994831281003,5.89270757284543,4.9155533082844,10.342652961876,4.61658106384004,6.25889092142746,7.4890188516279,4.41106157328659,4.85034613145665,5.97722629927717,4.51816213431315,7.2295116202132,6.06899974449858,4.36894912815136,9.21575428359059,7.98702151037774,5.52430918996644,4.70007429187427,6.08413180764231,5.50291508915639,6.29375367739212,7.86362869673143,8.14954658274176,4.44626602186696,5.5539430462659],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,191,125,1)"}},"hoveron":"points","name":"Asia","legendgroup":"Asia","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[3533.00391,19749.4223,19117.97448,3528.481305,7612.240438,11305.38517,14800.16062,20422.9015,15605.42283,18292.63514,20512.92123,14195.52428,11674.83737,19654.96247,11150.98113,14255.98475,9595.929905,21209.0592,23311.34939,9508.141454,10172.48572,9356.39724,12980.66956,10922.66404,15277.03017,13236.92117,18855.72521,26982.29052,4269.122326,17428.74846],"y":[68.93,72.17,72.8,69.86,70.81,70.64,70.71,74.69,72.52,73.83,72.5,73.68,69.95,76.11,72.03,73.48,73.066,75.24,75.37,70.67,70.41,69.46,70.3,70.45,70.97,74.39,75.44,75.39,59.507,72.76],"text":["gdpPercap:  3533.0039<br />lifeExp: 68.93000<br />pop:   2509048<br />continent: Europe","gdpPercap: 19749.4223<br />lifeExp: 72.17000<br />pop:   7568430<br />continent: Europe","gdpPercap: 19117.9745<br />lifeExp: 72.80000<br />pop:   9821800<br />continent: Europe","gdpPercap:  3528.4813<br />lifeExp: 69.86000<br />pop:   4086000<br />continent: Europe","gdpPercap:  7612.2404<br />lifeExp: 70.81000<br />pop:   8797022<br />continent: Europe","gdpPercap: 11305.3852<br />lifeExp: 70.64000<br />pop:   4318673<br />continent: Europe","gdpPercap: 14800.1606<br />lifeExp: 70.71000<br />pop:  10161915<br />continent: Europe","gdpPercap: 20422.9015<br />lifeExp: 74.69000<br />pop:   5088419<br />continent: Europe","gdpPercap: 15605.4228<br />lifeExp: 72.52000<br />pop:   4738902<br />continent: Europe","gdpPercap: 18292.6351<br />lifeExp: 73.83000<br />pop:  53165019<br />continent: Europe","gdpPercap: 20512.9212<br />lifeExp: 72.50000<br />pop:  78160773<br />continent: Europe","gdpPercap: 14195.5243<br />lifeExp: 73.68000<br />pop:   9308479<br />continent: Europe","gdpPercap: 11674.8374<br />lifeExp: 69.95000<br />pop:  10637171<br />continent: Europe","gdpPercap: 19654.9625<br />lifeExp: 76.11000<br />pop:    221823<br />continent: Europe","gdpPercap: 11150.9811<br />lifeExp: 72.03000<br />pop:   3271900<br />continent: Europe","gdpPercap: 14255.9847<br />lifeExp: 73.48000<br />pop:  56059245<br />continent: Europe","gdpPercap:  9595.9299<br />lifeExp: 73.06600<br />pop:    560073<br />continent: Europe","gdpPercap: 21209.0592<br />lifeExp: 75.24000<br />pop:  13852989<br />continent: Europe","gdpPercap: 23311.3494<br />lifeExp: 75.37000<br />pop:   4043205<br />continent: Europe","gdpPercap:  9508.1415<br />lifeExp: 70.67000<br />pop:  34621254<br />continent: Europe","gdpPercap: 10172.4857<br />lifeExp: 70.41000<br />pop:   9662600<br />continent: Europe","gdpPercap:  9356.3972<br />lifeExp: 69.46000<br />pop:  21658597<br />continent: Europe","gdpPercap: 12980.6696<br />lifeExp: 70.30000<br />pop:   8686367<br />continent: Europe","gdpPercap: 10922.6640<br />lifeExp: 70.45000<br />pop:   4827803<br />continent: Europe","gdpPercap: 15277.0302<br />lifeExp: 70.97000<br />pop:   1746919<br />continent: Europe","gdpPercap: 13236.9212<br />lifeExp: 74.39000<br />pop:  36439000<br />continent: Europe","gdpPercap: 18855.7252<br />lifeExp: 75.44000<br />pop:   8251648<br />continent: Europe","gdpPercap: 26982.2905<br />lifeExp: 75.39000<br />pop:   6316424<br />continent: Europe","gdpPercap:  4269.1223<br />lifeExp: 59.50700<br />pop:  42404033<br />continent: Europe","gdpPercap: 17428.7485<br />lifeExp: 72.76000<br />pop:  56179000<br />continent: Europe"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,176,246,1)","opacity":1,"size":[4.73711086274366,5.46245399673978,5.69923465730081,5.00994841135964,5.59538443706805,5.04523525790558,5.73248147708556,5.15554006271282,5.10659105931128,8.26207702648979,9.21603585103979,5.64793676344929,5.77801236958701,4.00561540333621,4.87759423629259,8.38266622872152,4.20280449359801,6.06235892227666,5.00334741211677,7.39523452347783,5.68347312501541,6.63718460047671,5.58381321630558,5.11921103857739,4.57227899402677,7.48917192574021,5.53761739047554,5.31519777193933,7.78197424302696,8.38758788519898],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,176,246,1)"}},"hoveron":"points","name":"Europe","legendgroup":"Europe","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[18334.19751,16233.7177],"y":[73.49,72.22],"text":["gdpPercap: 18334.1975<br />lifeExp: 73.49000<br />pop:  14074100<br />continent: Oceania","gdpPercap: 16233.7177<br />lifeExp: 72.22000<br />pop:   3164900<br />continent: Oceania"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(231,107,243,1)","opacity":1,"size":[6.08061917751821,4.85899251590851],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(231,107,243,1)"}},"hoveron":"points","name":"Oceania","legendgroup":"Oceania","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.3059360730594,"r":7.30593607305936,"b":37.2602739726027,"l":37.2602739726027},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2573.723857,62210.200997],"tickmode":"array","ticktext":["0","20000","40000","60000"],"tickvals":[0,20000,40000,60000],"categoryorder":"array","categoryarray":["0","20000","40000","60000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"gdpPercap","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[28.9755,78.3545],"tickmode":"array","ticktext":["30","40","50","60","70"],"tickvals":[30,40,50,60,70],"categoryorder":"array","categoryarray":["30","40","50","60","70"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"lifeExp","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"pop<br />continent","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"374c7eb947e5":{"x":{},"y":{},"size":{},"colour":{},"type":"scatter"}},"cur_data":"374c7eb947e5","visdat":{"374c7eb947e5":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+&lt;/div&gt;
+
+---
+
+# Some basic RStudio/Git actions
+
+- Stage and commit your changes
+
+--
+
+- Pull subsequent changes
+
+--
+
+- Push changes
+
+--
+
+- Pull again...
+
+--
+
+- Create a branch
+
+---
+
+# Are we having fun yet?
+
+&lt;div align="center"&gt;
+  &lt;img src="https://media2.giphy.com/media/l41lNRz0uXPQLm0RG/giphy.gif" width=80%&gt;
+&lt;/div&gt;
+
+---
+
+# Playing around
+
+i.e., I have nothing else planned
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": true,
+"slideNumberFormat": "<div class=\"progress-bar-container\">\n  <div class=\"progress-bar\" style=\"width: calc(%current% / %total% * 100%);\">\n  </div>\n</div>"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

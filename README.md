@@ -6,6 +6,3 @@ This script scrapes historical ASOS weather data from the [Iowa Environmental Me
 
 #### [lakefinder_scraper.R](https://github.com/realmiketalbot/Public/blob/master/lakefinder_scraper/lakefinder_scraper.R)
 If you are interested in scraping lake level data from the Minnesota DNR's [Lake Finder](https://www.dnr.state.mn.us/lakefind/index.html) site then look no further. If you're not then what do you do with all of your free time? You could be making something like [this](https://webapps.eorinc.io/lakefinder.php). Get your priorities straight.
-
-#### [covid19_analysis.R](https://github.com/realmiketalbot/Public/blob/master/covid19_analysis.R)
-I wrote this script because I wanted to do some COVID-19 data analysis for myself and  was having trouble finding good up-to-date state-level data. Eventually I found some made some neat plots, so use this script as a starting point if you're interested in doing something similar so you can get all angry and/or depressed about it.

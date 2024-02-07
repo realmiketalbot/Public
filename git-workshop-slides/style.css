@@ -1,0 +1,75 @@
+.title-slide {
+  background-image: url(https://cdn.jsdelivr.net/gh/eorinc/assets/logos/github-mark-white.png),
+                    url(https://cdn.jsdelivr.net/gh/eorinc/assets/logos/horizontal_white_trans.png);
+  background-size: 100px, 200px;
+  background-position: 7% 9%, 93% 9%;
+}
+
+.title-slide {
+  text-shadow: 1px 1px 2px darkgrey;
+  margin-top: -70px;
+}
+
+.remark-slide-number {
+  position: inherit;
+}
+
+.remark-slide-number .progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  height: 4px;
+  display: block;
+  left: 0;
+  right: 0;
+}
+
+.remark-slide-number .progress-bar {
+  height: 100%;
+  background-color: #00264c;
+}
+
+div.my-header {
+    background-color: #00264c;
+    position: fixed;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 30px;
+    width: 100%;
+    text-align: left;
+}
+
+div.my-footer {
+    background-color: white;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    height: 20px;
+    width: 100%;
+}
+
+div.my-footer span {
+    font-size: 10pt;
+    color: darkgrey;
+    margin-bottom: 10px;
+}
+
+div.my-footer span.company {
+    float: right;
+    margin-right: 15px;
+}
+
+div.my-footer span.xaringan {
+    float: left;
+    margin-left: 15px;
+}
+
+table,
+thead,
+th,
+tr,
+td {
+   border: none !important;
+   background-color: none !important;
+   background: transparent !important;
+}
