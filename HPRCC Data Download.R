@@ -13,6 +13,8 @@ active_stations <- read_file("awdn2.unl.edu/productdata/get?active=scqc1440") %>
 
 saveRDS(active_stations, "active_station_metadata.rds")
 
+file.remove("awdn2.unl.edu/productdata/get?active=scqc1440")
+
 # download data for each station
 for (stationid in active_stations$stationid) {
   station_name <- active_stations$name[active_stations$stationid == stationid]
@@ -37,9 +39,13 @@ for (stationid in active_stations$stationid) {
     filename <- str_glue("awdn2.unl.edu/productdata/get?name={station_name}&productid=scqc1440&begin={start}&end={end}&units=us&format=csv")
     url <- str_glue('https://{filename}')
     system(as.character(str_glue("wget '{url}' -p -k --random-wait")))
-    station_data[[year]] <- read_csv(filename, skip=1, show_col_types = F) %>%
-      mutate(stationid = stationid) %>%
-      filter(TIMESTAMP!="TS")
+    if (file.exists(filename)) {
+      station_data[[year]] <- read_csv(filename, skip=1, show_col_types = F) %>%
+        mutate(stationid = stationid) %>%
+        filter(TIMESTAMP!="TS")
+      
+      file.remove(filename)
+    }
   }
    
   station_data_all <- bind_rows(station_data) 

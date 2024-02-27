@@ -3,6 +3,4 @@
 .RData
 .Ruserdata
 .Rproj
-.rds
 *.rds
-*format=csv
