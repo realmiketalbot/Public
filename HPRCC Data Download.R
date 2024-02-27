@@ -1,4 +1,5 @@
-# scrapes all daily weather data in complete years from active stations in the HPRCC network
+# scrapes all daily weather data in complete years from active stations in the HPRCC AWDN
+# https://hprcc.unl.edu/awdn/
 
 library(tidyverse)
 library(tidyjson)
