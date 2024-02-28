@@ -37,7 +37,7 @@ for (stationid in active_stations$stationid) {
     end <- str_glue("{year}1231")
     
     # get daily weather data
-    filename <- str_glue("awdn2.unl.edu/productdata/get?name={station_name}&productid=scqc1440&begin={start}&end={end}&units=us&format=csv")
+    filename <- str_glue("awdn2.unl.edu/productdata/get?name={station_name}&productid=scqc1440&begin={start}&end={end}&units=si&format=csv")
     url <- str_glue('https://{filename}')
     system(as.character(str_glue("wget '{url}' -p -k --random-wait")))
     if (file.exists(filename)) {
@@ -50,5 +50,5 @@ for (stationid in active_stations$stationid) {
   }
    
   station_data_all <- bind_rows(station_data) 
-  saveRDS(station_data_all, str_glue("{stationid}.rds"))
+  saveRDS(station_data_all, str_glue("daily/{stationid}.rds"))
 }
