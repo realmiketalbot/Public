@@ -7,25 +7,24 @@ output: html_document
 
 This notebook is just me playing around with some weather data using machine learning.
 
-I downloaded a bunch of daily data from the HPRCC AWDN, then computed ET using the Doorenbos-Pruitt equation.
+I downloaded a bunch of daily data from the HPRCC AWDN, then computed ET using the Doorenbos-Pruitt equation (see the "HPRCC Data Download.R" script).
 
 The object is to see how well different algorithms can reduce redundancy/dimensionality and predict ET. I've intentionally included some redundancy in the variables (e.g., mean, max, and min temp).
 
 Since the Doorenbos-Pruitt method uses mean temperature, mean windspeed, mean relative humidity, and solar radiation, those variables should theoretically come out on top. 
 
-```{r setup}
+```{r setup, include=F}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.width=10)
 library(png)
 library(reticulate)
 use_python("/opt/homebrew/bin/python3")
 library(tidyverse)
-library(data.table)
 library(Evapotranspiration)
 options(dplyr.summarise.inform = FALSE)
 ```
 
-```{r import1}
+```{r import1, eval=F}
 # read daily HPRCC AWDN data files and combine
 
 metadata <- readRDS("data/HPRCC/active_station_metadata.rds") %>%
@@ -114,10 +113,6 @@ import pandas as pd
 
 df = pd.read_csv("data/HPRCC/daily_data_compiled_with_ET.csv")
 
-df[['et_doorenbospruitt']].max()
-df[['et_doorenbospruitt']].min()
-df[['et_doorenbospruitt']].max() - df[['et_doorenbospruitt']].min()
-
 # convert date to datetime data type
 df['date'] = pd.to_datetime(df['date'])
 
@@ -148,7 +143,7 @@ start_time = time.time()
 df1 = df[["yday", "month", "lat_deg", "lon_deg", "elev", "tmean", "tmax", "tmin", "rhmean", "rhmax", "rhmin", "rs", "u2", "udir", "preciptotal", "et_doorenbospruitt"]]
 
 # take a random subset
-df2 = df1.sample(frac=0.1, random_state=42)
+df2 = df1.sample(frac=0.01, random_state=42)
 
 # let's see how well we can predict reference crop ET
 from sklearn.model_selection import train_test_split
@@ -249,7 +244,7 @@ pca = PCA(n_components=16)  # You can change the number of components as needed
 
 # Fit PCA to the scaled data
 a = pca.fit(scaled_data)
-PCA(n_components=16)
+a = PCA(n_components=16)
 
 # Transform the data into the new feature space
 transformed_data = pca.transform(scaled_data)
@@ -275,11 +270,10 @@ rfe = RFE(estimator, n_features_to_select=10)  # Select 10 features
 # Fit RFE to your data
 a = rfe.fit(X_train, y_train)
 
-Quitting from lines 265-285 [rfe] (Weather_ML.Rmd)
-RFE(estimator=RandomForestRegressor(), n_features_to_select=10)
-
 # Identify selected features
 selected_features = X_train.columns[rfe.support_]
+
+print(selected_features)
 
 # Subset your data
 X_train_selected = X_train[selected_features]
