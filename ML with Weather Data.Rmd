@@ -1,0 +1,287 @@
+---
+title: "ML with Weather Data"
+author: "Mike Talbot"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+This notebook is just me playing around with some weather data using machine learning.
+
+I downloaded a bunch of daily data from the HPRCC AWDN, then computed ET using the Doorenbos-Pruitt equation.
+
+The object is to see how well different algorithms can reduce redundancy/dimensionality and predict ET. I've intentionally included some redundancy in the variables (e.g., mean, max, and min temp).
+
+Since the Doorenbos-Pruitt method uses mean temperature, mean windspeed, mean relative humidity, and solar radiation, those variables should theoretically come out on top. 
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=10)
+library(png)
+library(reticulate)
+use_python("/opt/homebrew/bin/python3")
+library(tidyverse)
+library(data.table)
+library(Evapotranspiration)
+options(dplyr.summarise.inform = FALSE)
+```
+
+```{r import1}
+# read daily HPRCC AWDN data files and combine
+
+metadata <- readRDS("data/HPRCC/active_station_metadata.rds") %>%
+  select(stationid, latitude, longitude, elevation) %>%
+  as_tibble()
+
+files <- list.files("data/HPRCC/daily/", pattern=".rds", full.names=T)
+
+data_list <- list()
+for (file in files) {
+  data_list[[file]] <- readRDS(file) 
+}
+
+data("constants")
+
+data <- bind_rows(data_list) %>%
+  select(stationid, TIMESTAMP, AirTempMax2m, AirTempMin2m, PrecipTotal, 
+         RelHumMax2m, RelHumMin2m, SolarTotal, WindSpeedAvg2m, WindDirectionAvg2m) %>%
+  merge(metadata, by="stationid") %>%
+  rename(date="TIMESTAMP",
+         lat_deg="latitude",
+         lon_deg="longitude",
+         Elev="elevation",
+         Tmax="AirTempMax2m",
+         Tmin="AirTempMin2m",
+         RHmax="RelHumMax2m",
+         RHmin="RelHumMin2m",
+         Rs="SolarTotal", 
+         u2="WindSpeedAvg2m",
+         udir="WindDirectionAvg2m") %>%
+  mutate(stationid=as.factor(stationid)) %>%
+  mutate(date=as.Date(date)) %>%
+  pivot_longer(cols=c(-stationid, -date)) %>%
+  mutate(value=as.numeric(value)) %>%
+  na.omit() %>%
+  pivot_wider(id_cols=c(stationid, date)) %>%
+  na.omit() %>%
+  filter(RHmax > 0) %>%
+  mutate(lat_rad = lat_deg * pi / 180) %>%
+  mutate(Tmean = (Tmax + Tmin) / 2,
+         RHmean = (RHmax + RHmin) / 2,
+         delta = 2503 * exp((17.27 * Tmean) / (Tmean + 237.3)) / (Tmean + 237.3) ^ 2,
+         gamma = 0.001013 * 101.2 / (0.622 * constants$lambda), 
+         b = 1.066 - 0.0013 * RHmean + 0.045 * u2 - 0.0002 * RHmean * u2,
+         b = b - 0.0000315 * RHmean ^ 2 - 0.0011 * u2 ^ 2,
+         ET_DoorenbosPruitt = -0.3 + b * (delta * Rs / (constants$lambda * (delta + gamma))),
+         ET_DoorenbosPruitt = ifelse(ET_DoorenbosPruitt < 0, 0, ET_DoorenbosPruitt))
+
+names(data) <- tolower(names(data))
+
+saveRDS(data, "data/HPRCC/daily_data_compiled_with_ET.rds")
+write_csv(data, "data/HPRCC/daily_data_compiled_with_ET.csv")
+
+# convert data to anomalies from the station mean for each day of year
+data <- readRDS("data/HPRCC/daily_data_compiled_with_ET.rds")
+
+yday_means <- data %>%
+  mutate(yday=yday(date)) %>%
+  select(-delta, -gamma, -b, -lat_deg, -lat_rad, -lon_deg, -elev, -preciptotal) %>%
+  select(-date) %>%
+  pivot_longer(cols=c(-stationid, -yday)) %>%
+  group_by(stationid, yday, name) %>%
+  summarize(mean=mean(value))
+
+anomalies <- data %>%
+  mutate(yday=yday(date)) %>%
+  select(-delta, -gamma, -b, -lat_deg, -lat_rad, -lon_deg, -elev, -preciptotal) %>%
+  pivot_longer(cols=c(-stationid, -yday, -date)) %>%
+  merge(yday_means, by=c("stationid", "yday", "name")) %>%
+  mutate(anomaly=(value-mean)) %>%
+  select(-value, -mean) %>%
+  rename(value=anomaly) %>%
+  pivot_wider(id_cols=c(stationid, date, yday)) %>%
+  merge(data %>% 
+          select(stationid, date, preciptotal, lat_deg, lon_deg, elev),
+        by = c("stationid", "date")) %>%
+  as_tibble()
+
+saveRDS(anomalies, "data/HPRCC/daily_anomalies_compiled_with_ET.rds")
+write_csv(anomalies, "data/HPRCC/daily_anomalies_compiled_with_ET.csv")
+
+```
+
+```{python import2}
+import pandas as pd
+
+df = pd.read_csv("data/HPRCC/daily_data_compiled_with_ET.csv")
+
+df[['et_doorenbospruitt']].max()
+df[['et_doorenbospruitt']].min()
+df[['et_doorenbospruitt']].max() - df[['et_doorenbospruitt']].min()
+
+# convert date to datetime data type
+df['date'] = pd.to_datetime(df['date'])
+
+# set the index as date
+df = df.set_index('date')
+
+# add year, month, and hour as factor variables
+df['year'] = df.index.year.astype("int")
+df['month'] = df.index.month.astype("int")
+df['day'] = df.index.day.astype("int")
+df['yday'] = df.index.day.astype("int")
+```
+
+```{python randomforestregressor}
+from matplotlib import pyplot as plt
+import numpy as np
+import time
+import pandas as pd
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
+start_time = time.time()
+
+# things to try in order to eliminate the influence of the seasonal cycle
+# 1. evaluate the statistics on a day-by-day basis (i.e., how much of the model's performance is simply explained by the daily averages)
+# 2. see if the model performs if it's trained on anomalies (e.g., for each day of year)
+
+df1 = df[["yday", "month", "lat_deg", "lon_deg", "elev", "tmean", "tmax", "tmin", "rhmean", "rhmax", "rhmin", "rs", "u2", "udir", "preciptotal", "et_doorenbospruitt"]]
+
+# take a random subset
+df2 = df1.sample(frac=0.1, random_state=42)
+
+# let's see how well we can predict reference crop ET
+from sklearn.model_selection import train_test_split
+train_set, test_set = train_test_split(df2, test_size=0.2, random_state=42)
+
+X_train = train_set.copy()
+X_train = train_set.drop("et_doorenbospruitt", axis=1)
+y_train = train_set["et_doorenbospruitt"].copy()
+
+X_test = test_set.copy()
+X_test = test_set.drop("et_doorenbospruitt", axis=1)
+y_test = test_set["et_doorenbospruitt"].copy()
+
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.pipeline import make_pipeline
+num_pipeline = make_pipeline(SimpleImputer(strategy="median"), StandardScaler())
+cat_pipeline = make_pipeline(SimpleImputer(strategy="most_frequent"), OneHotEncoder(handle_unknown="ignore"))
+
+from sklearn.compose import make_column_selector, make_column_transformer
+#
+preprocessing = make_column_transformer(
+  (num_pipeline, make_column_selector(dtype_include=np.number)),
+  (cat_pipeline, make_column_selector(dtype_include=object)),
+)
+
+from sklearn.ensemble import RandomForestRegressor
+forest = make_pipeline(preprocessing, RandomForestRegressor(random_state=42))
+
+# Define the parameter grid to search over
+param_grid = {
+    'randomforestregressor__n_estimators': [50, 100, 150],  # Number of trees in the forest
+    'randomforestregressor__max_depth': [None, 10, 20],      # Maximum depth of the trees
+}
+
+from sklearn.model_selection import GridSearchCV
+
+# Create a GridSearchCV instance
+forest_grid = GridSearchCV(estimator=forest, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error', n_jobs=-1)
+
+# Fit the grid search to the training data
+a = forest_grid.fit(X_train, y_train)
+
+# Get the best hyperparameters and the best estimator
+best_params = forest_grid.best_params_
+best_estimator = forest_grid.best_estimator_
+
+# Print the best hyperparameters
+print("Best Hyperparameters:", best_params)
+
+# Evaluate the best estimator on the test data
+test_score = best_estimator.score(X_test, y_test)
+print("Test Score:", test_score)
+
+# Access the best estimator from the grid search
+best_estimator = forest_grid.best_estimator_
+
+# Extract feature importances from the best estimator
+importances = best_estimator.named_steps['randomforestregressor'].feature_importances_
+
+# Extract standard deviation of feature importances across trees
+std = np.std([tree.feature_importances_ for tree in best_estimator.named_steps['randomforestregressor'].estimators_], axis=0)
+
+# Get the column names after preprocessing
+preprocessed_columns = best_estimator.named_steps['columntransformer'].get_feature_names_out()
+
+# Additional evaluation
+forest_importances = pd.Series(importances, index=preprocessed_columns)
+
+print((forest_importances * 100).round(2))
+
+y_pred = best_estimator.predict(X_test)
+
+from sklearn import metrics
+print('Mean Absolute Error (MAE):', metrics.mean_absolute_error(y_test, y_pred))
+print('Mean Squared Error (MSE):', metrics.mean_squared_error(y_test, y_pred))
+print('Root Mean Squared Error (RMSE):', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
+
+print("--- %s seconds ---" % (time.time() - start_time))
+```
+
+```{python pca}
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+# Drop non-numeric columns if any (e.g., 'stationid' and 'date')
+df1 = df[["yday", "month", "lat_deg", "lon_deg", "elev", "tmean", "tmax", "tmin", "rhmean", "rhmax", "rhmin", "rs", "u2", "udir", "preciptotal", "et_doorenbospruitt"]]
+
+# Standardize the features
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(df1)
+
+# Initialize PCA with the desired number of components
+# You can choose the number of components based on your requirements
+# For example, if you want to visualize the data, you might choose 2 or 3 components
+pca = PCA(n_components=16)  # You can change the number of components as needed
+
+# Fit PCA to the scaled data
+a = pca.fit(scaled_data)
+PCA(n_components=16)
+
+# Transform the data into the new feature space
+transformed_data = pca.transform(scaled_data)
+
+# The transformed_data will contain the principal components
+# You can also access the explained variance ratio of each principal component
+explained_variance_ratio = pca.explained_variance_ratio_
+
+# Print the explained variance ratio to see how much variance each principal component explains
+print("Explained Variance Ratio:", explained_variance_ratio)
+```
+
+```{python rfe}
+from sklearn.feature_selection import RFE
+from sklearn.ensemble import RandomForestRegressor
+
+# Instantiate your model
+estimator = RandomForestRegressor()
+
+# Instantiate RFE
+rfe = RFE(estimator, n_features_to_select=10)  # Select 10 features
+
+# Fit RFE to your data
+a = rfe.fit(X_train, y_train)
+
+Quitting from lines 265-285 [rfe] (Weather_ML.Rmd)
+RFE(estimator=RandomForestRegressor(), n_features_to_select=10)
+
+# Identify selected features
+selected_features = X_train.columns[rfe.support_]
+
+# Subset your data
+X_train_selected = X_train[selected_features]
+X_test_selected = X_test[selected_features]
+```
