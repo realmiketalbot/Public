@@ -1,3 +1,6 @@
+# DEPRECATED
+# Recommend using the 'riem' package instead
+
 #example script that scrapes data from the IEM ASOS download service
 #adapted from python code here: https://github.com/akrherz/iem/blob/master/scripts/asos/iem_scraper_example.py
 #modified to download data for a single ASOS station specified below
